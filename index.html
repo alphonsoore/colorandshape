@@ -6,25 +6,29 @@
 <title>What color? What shape?</title>
 <style>
 @font-face{font-family:F;src:url('./font.otf')}
-:root{--m:2.2vh;--w:min(15vh,16vw);--ch:calc(var(--w)*.55);--bw:min(34vw,56vh);--ink:#2b2b2b;--bg:#e8e1d0;--panel:#d6cdb8}
+:root{--m:min(2vh,2vw);--ch:7vh;--w:min(11vh,14vw);--rw:min(22vh,24vw);--bh:min(42vh,46.2vw);--ink:#2b2b2b;--bg:#e8e1d0;--panel:#d6cdb8}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
-html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:F,sans-serif;touch-action:manipulation}
+html{height:100%}
+body{margin:0;height:100dvh;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:F,sans-serif;touch-action:manipulation;
+ display:grid;grid-template-columns:var(--w) 1fr var(--rw);grid-template-rows:var(--ch) 1fr;
+ grid-template-areas:"colors colors colors" "shapes display rightcol";gap:var(--m);padding:var(--m)}
 button{font:inherit;color:inherit;border:0;border-radius:0;cursor:pointer;padding:0}
-#shapes{position:absolute;left:var(--m);top:calc(var(--m)*2 + var(--ch));width:var(--w);height:calc(100% - 3*var(--m) - var(--ch));display:flex;flex-direction:column;gap:calc(var(--m)*.4)}
+#shapes{grid-area:shapes;min-height:0;min-width:0;display:flex;flex-direction:column;gap:calc(var(--m)*.4)}
 #shapes button{flex:1;min-height:0;background:var(--panel);box-shadow:3px 3px 0 #0003;display:flex;align-items:center;justify-content:center}
 #shapes svg{height:78%;width:78%}
-#colors{position:absolute;left:var(--m);right:var(--m);top:var(--m);height:var(--ch);display:grid;grid-template-columns:repeat(17,1fr);gap:3px}
+#colors{grid-area:colors;min-height:0;min-width:0;display:grid;grid-template-columns:repeat(17,1fr);gap:3px}
 #colors button{box-shadow:2px 2px 0 #0003;border:1px solid #0004}
 .on{outline:4px solid var(--ink);outline-offset:-1px;z-index:1}
 #shapes .on{background:#fff}
-#display{position:absolute;left:calc(var(--w) + 2*var(--m));right:calc(var(--bw) + 3*var(--m));top:calc(var(--m)*2 + var(--ch));bottom:var(--m);display:flex;align-items:center;justify-content:center}
+#display{grid-area:display;min-height:0;min-width:0;display:flex;align-items:center;justify-content:center}
 #big{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 #big svg{width:100%;height:100%}
 #big .pop{animation:pop .16s steps(4)}
 @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
 .haze{position:relative;width:100%;height:100%}.haze i{position:absolute;filter:blur(38px);opacity:.55}.haze i:nth-child(1){inset:8% 10% 10% 8%;border-radius:42% 58% 50% 50%/55% 45% 55% 45%}.haze i:nth-child(2){inset:24% 18% 16% 26%;border-radius:60% 40% 45% 55%/45% 55% 45% 55%;opacity:.45}
-#bz{position:absolute;right:var(--m);bottom:var(--m);width:var(--bw);height:calc(var(--bw)*1.05);pointer-events:none}
-#add{position:absolute;width:calc(var(--bw)*.5);height:calc(var(--bw)*.4);bottom:calc(var(--m) + var(--bw)*1.05 + 3.5vh);right:calc(var(--m) + var(--bw)*.25);background:#3a9a55;box-shadow:4px 4px 0 #0003;display:flex;align-items:center;justify-content:center;border-radius:calc(var(--bw)*.08);z-index:2}
+#rightcol{grid-area:rightcol;min-height:0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:min(2vh,2vw)}
+#bz{height:var(--bh);width:auto;aspect-ratio:1/1.05;max-width:100%;flex:0 1 auto;min-height:0;pointer-events:none}
+#add{height:calc(var(--bh)*.38);width:auto;aspect-ratio:1.45/1;max-width:100%;flex:0 1 auto;min-height:0;background:#3a9a55;box-shadow:4px 4px 0 #0003;display:flex;align-items:center;justify-content:center;border-radius:12%}
 #add svg{width:70%;height:70%}
 #add path.l{stroke:#fff;fill:none}#add polygon{fill:#fff}
 #add:disabled{background:#c9c4b8;box-shadow:none;cursor:default}
@@ -32,17 +36,19 @@ button{font:inherit;color:inherit;border:0;border-radius:0;cursor:pointer;paddin
 #add:not(:disabled):active{transform:translate(3px,3px);box-shadow:1px 1px 0 #0003}
 canvas{position:fixed;inset:0;pointer-events:none;z-index:3}
 #ov{position:fixed;inset:0;background:var(--bg);z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;text-align:center}
-#ov svg{height:32vh;width:32vh}
-#ov b{font-size:8vh;font-weight:normal;margin-top:2vh}
-#ov span{font-size:4.5vh;margin-top:1vh}
+#ov svg{height:min(32vh,32vw);width:min(32vh,32vw)}
+#ov b{font-size:min(8vh,8vw);font-weight:normal;margin-top:2vh}
+#ov span{font-size:min(4.5vh,4.5vw);margin-top:1vh}
 </style>
 </head>
 <body>
 <div id="shapes"></div>
 <div id="colors"></div>
 <div id="display"><div id="big"></div></div>
-<div id="bz"></div>
+<div id="rightcol">
 <button id="add" disabled aria-label="Add to bucket"><svg viewBox="0 0 100 100"><path class="l" d="M10 28H58a16 16 0 0 1 16 16V58" stroke-width="12"/><polygon points="52,56 96,56 74,86"/></svg></button>
+<div id="bz"></div>
+</div>
 <canvas id="cv"></canvas>
 <div id="ov"><svg viewBox="0 0 100 100"><path d="M18 8L92 50L18 92Z" fill="#000"/></svg><b>Start</b><span>What color? What shape?</span></div>
 
@@ -55,7 +61,6 @@ square:'M10 10H90V90H10Z',
 rectangle:'M28 5H72V95H28Z',
 star,
 heart:'M50 91C14 63 5 45 5 30C5 16 16 6 29 6C39 6 46 12 50 20C54 12 61 6 71 6C84 6 95 16 95 30C95 45 86 63 50 91Z'};
-const P={};for(const k in SH)P[k]=new Path2D(SH[k]);
 const CO=[['brown','#8b5a2b'],['red','#e02f2f'],['pink','#f5a6c9'],['orange','#f28c1c'],['yellow','#f7c800'],['light yellow','#fff4a3'],['light green','#a8e070'],['green','#3fae49'],['dark green','#0f5a2c'],['light blue','#8fd3f4'],['blue','#2f80ed'],['dark blue','#14297a'],['light purple','#c9a9f0'],['purple','#7a35b8'],['gray','#8a8a8a'],['black','#1a1a1a'],['white','#ffffff']];
 const sel={shape:null,color:null};
 const $=id=>document.getElementById(id);
@@ -78,25 +83,38 @@ function ui(){
  add.disabled=!(s&&c);
 }
 
-/* ---- physics + drawing ---- */
+/* ---- physics + drawing. There is exactly one beaker, drawn in exactly one place:
+   here, on the canvas. #bz is never given any visible CSS of its own — it exists
+   purely so JS can ask "where is the beaker right now", which it does fresh every
+   single frame (no cached rect that can drift out of sync with reality). If the
+   beaker's rect has changed since last frame (resize/zoom), settled shapes are
+   rescaled/repositioned by the same delta, so they stay correctly inside it. ---- */
 const cv=$('cv'),ctx=cv.getContext('2d');
+const P={};for(const k in SH)P[k]=new Path2D(SH[k]);
 let B=null,bodies=[],fl=[];
-function layout(){
+function readB(){
  const d=devicePixelRatio||1;cv.width=innerWidth*d;cv.height=innerHeight*d;
  const r=$('bz').getBoundingClientRect(),nb={x:r.left,y:r.top,w:r.width,h:r.height,R:r.width*.2};
- if(B){const k=nb.w/B.w;for(const o of bodies){o.x=nb.x+(o.x-B.x)*k;o.y=nb.y+(o.y-B.y)*k;o.r*=k;o.vx*=k;o.vy*=k}}
+ if(B&&B.w>0&&nb.w>0){
+  const k=nb.w/B.w;
+  for(const o of bodies){o.x=nb.x+(o.x-B.x)*k;o.y=nb.y+(o.y-B.y)*k;o.r*=k;o.vx*=k;o.vy*=k}
+ }
  B=nb;
 }
-addEventListener('resize',layout);
 
 add.onclick=()=>{
  if(add.disabled)return;
- const sv=big.querySelector('svg').getBoundingClientRect();
- fl.push({t:0,x0:sv.left+sv.width/2,y0:sv.top+sv.height/2,s0:Math.min(sv.width,sv.height),shape:sel.shape,color:sel.color,a1:(Math.random()-.5)*4,tx:B.x+B.w/2+(Math.random()-.5)*B.w*.3});
- sel.shape=sel.color=null;ui();
+ try{
+  const svgEl=big.querySelector('svg');
+  if(!svgEl)return;
+  if(!B)readB();
+  const sv=svgEl.getBoundingClientRect();
+  fl.push({t:0,x0:sv.left+sv.width/2,y0:sv.top+sv.height/2,s0:Math.min(sv.width,sv.height),shape:sel.shape,color:sel.color,a1:(Math.random()-.5)*4,tx:B.x+B.w/2+(Math.random()-.5)*B.w*.3});
+  sel.shape=sel.color=null;ui();
+ }catch(e){}
 };
 
-const G=2600,E=.35;
+const G=2600;
 function hit(o,nx,ny,pen){
  o.x+=nx*pen;o.y+=ny*pen;o.c=1;
  const vn=o.vx*nx+o.vy*ny;
@@ -155,36 +173,44 @@ function bucket(front){
   ctx.fillText(count,px+pw/2,py+ph/2+ph*.04);
  }
 }
-const GL=new Audio('./audio/glass.wav');GL.preload='auto';
-function glass(){try{GL.cloneNode().play().catch(()=>{})}catch(e){}}
+let GL=null;
+try{GL=new Audio('./audio/glass.wav');GL.preload='auto'}catch(e){}
+function glass(){try{GL&&GL.cloneNode().play().catch(()=>{})}catch(e){}}
 let count=0,last=performance.now();
 function frame(now){
+ requestAnimationFrame(frame);
  const dt=Math.min((now-last)/1000,1/30);last=now;
- if(B){
-  for(let k=0;k<3;k++)step(dt/3);
-  const d=devicePixelRatio||1;ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,innerWidth,innerHeight);
-  bucket(false);
-  for(const o of bodies)drawShape(o.shape,o.color,o.x,o.y,o.r*2.15,o.a);
-  bucket(true);
+ try{readB()}catch(e){}
+ if(!B||!(B.w>0))return;
+ try{for(let k=0;k<3;k++)step(dt/3)}catch(e){}
+ try{
   const D=B.w*.09*2.15;
   for(let j=fl.length-1;j>=0;j--){
    const f=fl[j];f.t+=dt/.75;const t=Math.min(f.t,1),e=t*t*(3-2*t);
-   const ty=B.y-B.w*.12,x=f.x0+(f.tx-f.x0)*e,y=f.y0+(ty-f.y0)*e-Math.sin(Math.PI*t)*innerHeight*.22;
-   const sz=f.s0+(D-f.s0)*e,sq=1+.12*Math.sin(Math.PI*Math.min(1,t*3));
-   drawShape(f.shape,f.color,x,y,sz*sq,f.a1*e);
-   if(f.t>=1){bodies.push({x,y,vx:(Math.random()-.5)*200,vy:300,a:f.a1,w:(Math.random()-.5)*8,r:B.w*.09,shape:f.shape,color:f.color});count++;fl.splice(j,1)}
+   const ty=B.y-B.w*.12;
+   f.cx=f.x0+(f.tx-f.x0)*e;f.cy=f.y0+(ty-f.y0)*e-Math.sin(Math.PI*t)*innerHeight*.22;
+   f.csz=f.s0+(D-f.s0)*e;f.csq=1+.12*Math.sin(Math.PI*Math.min(1,t*3));f.ca=f.a1*e;
+   if(f.t>=1){bodies.push({x:f.cx,y:f.cy,vx:(Math.random()-.5)*200,vy:300,a:f.a1,w:(Math.random()-.5)*8,r:B.w*.09,shape:f.shape,color:f.color});count++;fl.splice(j,1)}
   }
- }
- requestAnimationFrame(frame);
+ }catch(e){}
+ try{
+  const d=devicePixelRatio||1;ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,innerWidth,innerHeight);
+  bucket(false);
+  for(const o of bodies)drawShape(o.shape,o.color,o.x,o.y,o.r*2.15,o.a);
+  for(const f of fl)drawShape(f.shape,f.color,f.cx,f.cy,f.csz*f.csq,f.ca);
+  bucket(true);
+ }catch(e){}
 }
 
-$('ov').onclick=function(){
- try{const a=new Audio('./audio/start.wav');a.play().catch(()=>{})}catch(e){}
- try{const el=document.documentElement;(el.requestFullscreen||el.webkitRequestFullscreen).call(el).catch(()=>{})}catch(e){}
- this.remove();setTimeout(layout,150);
-};
-(document.fonts&&document.fonts.load('20px F').catch(()=>{}));
-layout();requestAnimationFrame(frame);
+try{
+ $('ov').onclick=function(){
+  try{const a=new Audio('./audio/start.wav');a.play().catch(()=>{})}catch(e){}
+  try{const el=document.documentElement;(el.requestFullscreen||el.webkitRequestFullscreen).call(el).catch(()=>{})}catch(e){}
+  this.remove();
+ };
+}catch(e){}
+try{document.fonts&&document.fonts.load('20px F').catch(()=>{})}catch(e){}
+requestAnimationFrame(frame);
 </script>
 </body>
 </html>
